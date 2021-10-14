@@ -16,7 +16,7 @@ exports.signup = (req, res, next) => {
         .then(() => res.status(201).json({ message: 'Utilisateur créé !'}))
         .catch(error => res.status(400).json({ message: 'Utilisateur déjà existant ou non créé !' }));
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => res.status(500).json({ message: 'Erreur enregistrement !' }));
 };
 
 exports.login = (req, res, next) => {
@@ -40,5 +40,5 @@ exports.login = (req, res, next) => {
             });
         })
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => res.status(500).json({ message: 'Erreur de connection !' }));
 };

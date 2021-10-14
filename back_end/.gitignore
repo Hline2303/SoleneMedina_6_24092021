@@ -1,4 +1,12 @@
 /node_modules
-/images
+/images/*
 .env
+/controllers_copy
+/middleware_copy
+/models_copy
+/routes_copy
+app_copy.js
+app_copy2.js
+server_copy.js
+
 
