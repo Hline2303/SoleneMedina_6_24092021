@@ -17,6 +17,7 @@ mongoose
 const sauceRoutes = require("./routes/sauces");
 const userRoutes = require("./routes/user");
 
+// CORS
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -27,13 +28,14 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
-  next();
+  next(); // Pb error 500
 });
 
 app.use(express.json());
 
+// Serialization
 app.post("/api/sauces", (req, res, next) => {
-  delete req.body.id;
+  delete req.body.id; // Pb error 500
   console.log(req);
   const sauce = new Sauce({
     ...req.body,
@@ -42,48 +44,52 @@ app.post("/api/sauces", (req, res, next) => {
   sauce
     .save()
     .then(() => res.status(201).json({ message: "Objet enregistré !" }))
-    .catch((error) => res.status(400).json({ message: "Objet non enregistré !" }));
+    .catch((error) =>
+      res.status(400).json({ message: "Objet non enregistré !" })
+    );
 });
 
-app.use("/api/sauces", (req, res, next) => {
-  const sauce = [
-    {
-      _id: "",
-      name: "",
-      manufacturer: "",
-      description: "",
-      mainPepper: "",
-      imageUrl:
-        "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
-      heat: 3,
-      likes: "",
-      dislikes: "",
-      usersLiked: "",
-      usersDisliked: "",
-    },
-    {
-      _id: "objetId",
-      name: "Mon premier objet",
-      manufacturer: "identifiant2",
-      description: "Les infos de mon deuxième objet",
-      mainPepper: "Ingrédient principal2",
-      imageUrl:
-        "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
-      heat: 3,
-      likes: "4",
-      dislikes: "1",
-      usersLiked: "identifiant1",
-      usersDisliked: "identifiant2",
+// app.use("/api/sauces", (req, res, next) => {
+//   const sauce = [
+//     {
+//       userId: "coucou",
+//       name: "Huile",
+//       manufacturer: "coucou",
+//       description: "Huile",
+//       mainPepper: "Huile",
+//       imageUrl:
+//         "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
+//       heat: 3,
+//       likes: 1,
+//       dislikes: 2,
+//       usersLiked: [""],
+//       usersDisliked: [""],
+//     },
+//     {
+//       userId: "objetId",
+//       name: "Mon premier objet",
+//       manufacturer: "identifiant2",
+//       description: "Les infos de mon deuxième objet",
+//       mainPepper: "Ingrédient principal2",
+//       imageUrl:
+//         "https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg",
+//       heat: 3,
+//       likes: 4,
+//       dislikes: 1,
+//       usersLiked: ["identifiant1"],
+//       usersDisliked: ["identifiant2"],
 
-    },
-  ];
-  res.status(200).json(sauce);
-});
+//     },
+//   ];
+//   res.status(200).json(sauce);
+// });
 
-app.use(express.json());
+// app.use(express.json());
 
+// Static image
 app.use("/images", express.static(path.join(__dirname, "images")));
 
+// Routes
 app.use("/api/sauces", sauceRoutes);
 app.use("/api/auth", userRoutes);
 
